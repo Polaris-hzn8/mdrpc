@@ -48,8 +48,10 @@ message GetFriendListResponse {
     repeated UserInfo friends = 2; // shorter field name
 }
 
-// 描述 rpc 方法类型
+// 服务定义
 service UserServiceRpc {
+    // RPC方法定义
     rpc Login(LoginRequest) returns (LoginResponse);
+    // RPC方法定义
     rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse);
 }
