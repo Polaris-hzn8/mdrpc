@@ -1,11 +1,12 @@
 
-#include "pbgen/test.pb.h"
-#include <iostream>
 #include <string>
+#include <iostream>
+
+#include "pbgen/test.pb.h"
+
 using namespace fixbug;
 
-void test1()
-{
+void test1() {
     // 序列化
     LoginRequest req;
     req.set_user_id(10001);
@@ -29,8 +30,7 @@ void test1()
     rc->set_err_msg("login_succeed.");
 }
 
-void test2()
-{
+void test2() {
     // 好友列表获取响应
     GetFriendListResponse rsp;
     ResultCode* rc = rsp.mutable_ret_code();
@@ -53,10 +53,10 @@ void test2()
     std::cout << rsp.friend_list_size() << std::endl;
 }
 
-int main()
-{
+int main() {
     test1();
     test2();
 
     return 0;
 }
+
