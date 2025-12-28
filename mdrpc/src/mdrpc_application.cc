@@ -7,6 +7,10 @@
 
 #include "mdrpc_application.h"
 
+MdrpcApplication::MdrpcApplication() {
+
+}
+
 MdrpcApplication::~MdrpcApplication() {
 
 }

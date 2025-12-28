@@ -23,7 +23,7 @@ target_include_directories(rpc_provider PRIVATE
 )
 
 # 链接库（mdrpc 的 PUBLIC 头文件目录会自动传递到这里）
-target_link_directories(rpc_provider PRIVATE /opt/protobuf3/lib)
+# 注意：protobuf 库路径已在根 CMakeLists.txt 中通过 link_directories 设置
 target_link_libraries(rpc_provider 
     mdrpc      # 自动获取 mdrpc 的 PUBLIC 头文件路径
     protobuf   # protobuf 库（mdrpc 已经链接了，这里显式链接以确保顺序）

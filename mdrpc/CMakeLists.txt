@@ -16,10 +16,9 @@ target_include_directories(mdrpc PUBLIC
     /opt/protobuf3/include
 )
 
-# 链接依赖库
-target_link_directories(mdrpc PRIVATE /opt/protobuf3/lib)
+# 链接依赖库（使用完整路径以兼容旧版 CMake）
 target_link_libraries(mdrpc
-    protobuf
+    /opt/protobuf3/lib/libprotobuf.so
     pthread
 )
 

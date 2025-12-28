@@ -15,6 +15,7 @@ include_directories(${PROJECT_SOURCE_DIR}/example)
 
 # 公共库目录
 link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(/opt/protobuf3/lib)  # protobuf 库目录
 
 # 添加子目录（注意顺序：先构建库，再构建使用库的程序）
 add_subdirectory(mdrpc)      # 先构建 mdrpc 动态库
