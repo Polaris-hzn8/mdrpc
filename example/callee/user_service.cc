@@ -1,8 +1,16 @@
 
+/**
+* @author: luochenhao
+* @email: lch2022fox@163.com
+* @time: Sun 28 Dec 2025 16:56:38 CST
+* @brief: rpc服务发布端
+**/
+
 #include <string>
 #include <iostream>
 
 #include "user.pb.h"
+#include "mdrpc_provider.h"
 #include "mdrpc_application.h"
 
 // RPC服务发布端
@@ -47,17 +55,18 @@ public:
     }
 };
 
-int main() {
+int main(int argc, char** argv) {
     // 框架初始化
-    // zrpc::RpcApplication::Init(argc, argv);
+    MdrpcApplication::Init(argc, argv);
 
     // 将UserService对象发布到rpc服务节点上
     // 注册UserService服务对象
-    // zrpc::RpcServer server;
-    // server.RegisterService(new UserService());
+    MdrpcProvider server;
+    server.RegisterService(new UserService());
 
     // 启动rpc服务节点
-    // server.Run();
+    // 进程进入阻塞状态等待远程调用
+    server.Run();
 
     return 0;
 }
