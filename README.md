@@ -2,7 +2,7 @@
 
 ---
 
-RPC（Remote Procedure Call Protocal）：远程过程调用
+分布式网络通信框架RPC（Remote Procedure Call Protocal）：远程过程调用
 
 核心组件：
 
