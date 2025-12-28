@@ -3,7 +3,8 @@
 #include <iostream>
 #include "user.pb.h"
 
-class UserService {
+// RPC服务发布端
+class UserService : public test_pkg::UserServiceRpc {
 public:
     bool Login(const std::string& uid, const std::string& password) {
         // 远程方法执行的具体逻辑
@@ -16,11 +17,46 @@ public:
         std::cout << "password: " << password << std::endl;
         return true;
     }
+    // 重写基类虚函数（rpc框架调用）
+    void Login(
+        ::google::protobuf::RpcController* controller,
+        const ::test_pkg::LoginRequest* request,
+        ::test_pkg::LoginResponse* response,
+        ::google::protobuf::Closure* done) {
+        // 框架给业务上报了请求参数LoginRequest，业务获取相应数据做本地业务
+        // Protobuff直接从字节流中取出数据 省去协议解析的过程
+        // 1. 获取请求参数
+        std::string uid = std::to_string(request->uid());
+        std::string password = request->password();
+        // 2. 调用本地业务方法
+        bool login_result = Login(uid, password);
+        // 3. 填充响应
+        test_pkg::ResponseStatus* status = response->mutable_status();
+        if (login_result) {
+            status->set_code(0);
+            status->set_message("login succeed!");
+        } else {
+            status->set_code(1);
+            status->set_message("login failed!");
+        }
+        // 4. 执行回调操作
+        // 执行响应对象数据的序列化和网络发送（都是由框架完成）
+        done->Run();
+    }
 };
 
-// int main() {
-//     // 调用远程方法
-//     UserService user_service;
-//     user_service.Login("luochenhao", "123456");
-// }
+int main() {
+    // 框架初始化
+    // zrpc::RpcApplication::Init(argc, argv);
+
+    // 将UserService对象发布到rpc服务节点上
+    // 注册UserService服务对象
+    // zrpc::RpcServer server;
+    // server.RegisterService(new UserService());
+
+    // 启动rpc服务节点
+    // server.Run();
+
+    return 0;
+}
 

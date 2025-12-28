@@ -1,6 +1,6 @@
 
 cmake_minimum_required(version 3.0)
-project(pmzrpc)
+project(zrpc)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
