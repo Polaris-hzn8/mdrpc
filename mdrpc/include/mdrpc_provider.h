@@ -8,11 +8,22 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 #include <muduo/net/TcpServer.h>
 #include <muduo/net/TcpConnection.h>
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/InetAddress.h>
 #include <google/protobuf/service.h>
+#include <google/protobuf/message.h>
+#include <google/protobuf/descriptor.h>
+
+// 保存服务对象和服务方法的映射表
+struct ServiceInfo {
+    // 保存服务对象
+    google::protobuf::Service* _service;
+    // 保存服务方法名称和服务方法描述符的映射表
+    std::unordered_map<std::string, const google::protobuf::MethodDescriptor*> _method_map;
+};
 
 class MdrpcProvider {
 public:
@@ -28,6 +39,9 @@ private:
                    muduo::net::Buffer* buffer,
                    muduo::Timestamp receive_time);
 private:
+    // 存储注册成功的服务对象和服务方法
+    std::unordered_map<std::string, ServiceInfo> _service_map;
+
     // eventLoop对象(muduo库提供)
     muduo::net::EventLoop _event_loop;
 };

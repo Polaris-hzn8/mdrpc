@@ -5,12 +5,34 @@
 * @brief: 
 **/
 
+#include <iostream>
 #include <functional>
 #include "mdrpc_provider.h"
 #include "mdrpc_application.h"
 
+// 注册发布rpc服务方法
 void MdrpcProvider::RegisterService(google::protobuf::Service* service) {
-    
+    ServiceInfo service_info;
+    service_info._service = service;
+    service_info._method_map.clear();
+
+    // 服务描述符
+    const google::protobuf::ServiceDescriptor* sd = service->GetDescriptor();
+    // 服务名称
+    std::string service_name = sd->name();
+    // 服务方法数量
+    int method_count = sd->method_count();
+    for (int i = 0; i < method_count; ++i) {
+        // 服务方法描述符
+        const google::protobuf::MethodDescriptor* md = sd->method(i);
+        // 方法名称
+        std::string method_name = md->name();
+        // 存储服务方法名称和方法描述符的映射
+        service_info._method_map.insert({method_name, md});
+        std::cout << "Register method: " << method_name << " for service: " << service_name << std::endl;
+    }
+    _service_map.insert({service_name, service_info});
+    std::cout << "Register service: " << service_name << " with " << method_count << " methods." << std::endl;
 }
 
 void MdrpcProvider::Run() {
@@ -22,7 +44,7 @@ void MdrpcProvider::Run() {
         std::cerr << "rpcserver_ip or rpcserver_port is not configured!" << std::endl;
         exit(EXIT_FAILURE);
     }
-    
+
     std::string ip = ip_opt.value();
     uint16_t port = static_cast<uint16_t>(std::stoi(port_opt.value()));
     
