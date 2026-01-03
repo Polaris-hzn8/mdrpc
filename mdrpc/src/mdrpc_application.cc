@@ -9,7 +9,8 @@
 #include <unistd.h>
 #include "mdrpc_application.h"
 
-static MdrpcConfig _config;
+// 静态成员变量类外初始化
+MdrpcConfig MdrpcApplication::_config;
 
 static void PrintHelp() {
     std::cout << "Usage: ./rpc_callee -i <config_file>" << std::endl;
@@ -58,11 +59,24 @@ void MdrpcApplication::Init(int argc, char** argv) {
         std::cout << "Load config file: " << config_file << " failed." << std::endl;
         exit(EXIT_FAILURE);
     }
-    std::cout << "Load config file: " << config_file << " succeed." << std::endl;
-    std::cout << "rpcserver_ip: " << _config.Load("rpcserver_ip").value() << std::endl;
-    std::cout << "rpcserver_port: " << _config.Load("rpcserver_port").value() << std::endl;
-    std::cout << "zookeeper_ip: " << _config.Load("zookeeper_ip").value() << std::endl;
-    std::cout << "zookeeper_port: " << _config.Load("zookeeper_port").value() << std::endl;
 
-    // 
+    auto ip_opt = _config.Load("rpcserver_ip");
+    auto port_opt = _config.Load("rpcserver_port");
+    auto zk_ip_opt = _config.Load("zookeeper_ip");
+    auto zk_port_opt = _config.Load("zookeeper_port");
+
+    if (ip_opt == std::nullopt ||
+        port_opt == std::nullopt ||
+        zk_ip_opt == std::nullopt ||
+        zk_port_opt == std::nullopt) {
+        std::cout << "Config file format error, missing required keys." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    std::cout << "------------------ Config Info ------------------" << std::endl;
+    std::cout << "Load config file: " << config_file << " succeed." << std::endl;
+    std::cout << "rpcserver_ip: " << ip_opt.value() << std::endl;
+    std::cout << "rpcserver_port: " << port_opt.value() << std::endl;
+    std::cout << "zookeeper_ip: " << zk_ip_opt.value() << std::endl;
+    std::cout << "zookeeper_port: " << zk_port_opt.value() << std::endl;
 }

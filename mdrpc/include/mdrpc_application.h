@@ -12,6 +12,7 @@
 class MdrpcApplication {
 public:
     static MdrpcApplication& GetInstance();
+    static MdrpcConfig& GetConfig() { return _config; }
     static void Init(int argc, char** argv);
 
 private:
@@ -19,4 +20,6 @@ private:
     MdrpcApplication(const MdrpcApplication&) = delete;
     MdrpcApplication(MdrpcApplication&&) = delete;
     MdrpcApplication& operator=(const MdrpcApplication&) = delete;
+
+    static MdrpcConfig _config;
 };

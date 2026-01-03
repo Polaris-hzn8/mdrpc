@@ -61,12 +61,12 @@ int main(int argc, char** argv) {
 
     // 将UserService对象发布到rpc服务节点上
     // 注册UserService服务对象
-    MdrpcProvider server;
-    server.RegisterService(new UserService());
+    MdrpcProvider providor;
+    providor.RegisterService(new UserService());
 
     // 启动rpc服务节点
     // 进程进入阻塞状态等待远程调用
-    server.Run();
+    providor.Run();
 
     return 0;
 }

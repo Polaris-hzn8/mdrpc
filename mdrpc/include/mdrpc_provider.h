@@ -7,6 +7,11 @@
 
 #pragma once
 
+#include <memory>
+#include <muduo/net/TcpServer.h>
+#include <muduo/net/TcpConnection.h>
+#include <muduo/net/EventLoop.h>
+#include <muduo/net/InetAddress.h>
 #include <google/protobuf/service.h>
 
 class MdrpcProvider {
@@ -16,6 +21,14 @@ public:
     // 启动rpc服务节点，开始提供rpc远程网络调用服务
     void Run();
 private:
-
+    // 新连接回调
+    void OnConnection(const muduo::net::TcpConnectionPtr& conn);
+    // 消息读写回调
+    void OnMessage(const muduo::net::TcpConnectionPtr& conn,
+                   muduo::net::Buffer* buffer,
+                   muduo::Timestamp receive_time);
+private:
+    // eventLoop对象(muduo库提供)
+    muduo::net::EventLoop _event_loop;
 };
 
